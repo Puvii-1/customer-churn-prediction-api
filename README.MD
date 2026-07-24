@@ -172,29 +172,3 @@ churn-mlops/
 ├── docker-compose.yml
 └── requirements.txt
 ```
-
-## Honest notes on scope (things worth knowing if asked about this project)
-
-- **Model retrains at Docker build time**, not loaded from a registry.
-  For a real production setup, you'd instead pull a specific model
-  version from MLflow's Model Registry or S3 — this project doesn't
-  implement that to keep within a 1-2 week scope, but it's a natural
-  next step (see below).
-- **Monitoring is intentionally minimal** — `/metrics` gives request
-  count, latency, and prediction breakdown, logged to a JSONL file.
-  A production system would use Prometheus + Grafana for this instead.
-- **No Kubernetes** in this version — the Dockerfile and docker-compose
-  cover single-container deployment; a Helm chart / k8s manifests would
-  be the natural extension if you want to demonstrate that too.
-- **CI builds but doesn't push** the Docker image anywhere (no registry
-  configured) — wiring it to push to Docker Hub or GHCR is a small
-  addition if you want the pipeline to be fully deployable.
-
-## Ideas to extend further
-
-- Push the CI-built Docker image to GitHub Container Registry (GHCR) automatically
-- Add a `/predict/batch` endpoint for scoring many customers at once
-- Add data drift detection: compare incoming request feature distributions
-  against training data periodically
-- Add a simple Kubernetes deployment manifest + service for a "k8s" talking point
-- Swap the JSONL prediction log for a Prometheus client + Grafana dashboard
