@@ -29,7 +29,7 @@ jobs:
         run: python -m src.train
 
       - name: Run tests
-        run: pytest tests/ -v
+        run: python -m pytest tests/ -v
 
   build-docker:
     runs-on: ubuntu-latest
